@@ -21,7 +21,7 @@ public class Bank {
 	}
 	
 	/**
-	 * 转账方法，要使用锁
+	 * 转账方法，要使用锁防止多过一个线程同时调用本方法。
 	 * @param from 转出账号
 	 * @param to 转入账号
 	 * @param amount 金额
