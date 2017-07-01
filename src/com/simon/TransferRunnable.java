@@ -17,7 +17,7 @@ public class TransferRunnable implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (true) {
-			bank.transfer(ran.nextInt(bank.size()), ran.nextInt(bank.size()), ran.nextInt(10) + 1);
+			bank.transfer(ran.nextInt(bank.size()), ran.nextInt(bank.size()), ran.nextInt(50) + 1);
 			try {
 				Thread.sleep(ran.nextInt(5) * 100);
 			} catch (InterruptedException e) {

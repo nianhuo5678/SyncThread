@@ -6,7 +6,7 @@ public class BankTest {
 		// TODO Auto-generated method stub
 		Bank bank = new Bank();
 		Runnable r = new TransferRunnable(bank);
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 20; i++) {
 			Thread t = new Thread(r);
 			t.start();
 		}

@@ -1,5 +1,6 @@
 package com.simon;
 
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -7,6 +8,7 @@ public class Bank {
 	
 	public int[] accounts;  //账户余额数组
 	private Lock bankLock;
+	private Condition sufficientFund;
 	
 	/**
 	 * 
@@ -14,9 +16,10 @@ public class Bank {
 	 */
 	public Bank() {
 		bankLock = new ReentrantLock();
+		sufficientFund = bankLock.newCondition();
 		accounts = new int[10];
 		for(int i = 0; i < accounts.length; i++) {
-			accounts[i] = 10000; //账号默认余额10000
+			accounts[i] = 1000; //账号默认余额1000
 		}
 	}
 	
@@ -29,13 +32,21 @@ public class Bank {
 	public void transfer(int from , int to, int amount) {
 		bankLock.lock();
 		try {
+			while(accounts[from] < amount) {
+				try {
+					sufficientFund.await();  
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+			}
 			accounts[from] = accounts[from] - amount;
 			accounts[to] = accounts[to] + amount;
 			System.out.println("Total Balance: " + getTotalBalance());
+			sufficientFund.signalAll();
 		} finally {
 			bankLock.unlock();
 		}
-
 	}
 	
 	public int getTotalBalance() {
